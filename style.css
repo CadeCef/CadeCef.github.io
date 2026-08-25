@@ -54,11 +54,6 @@ h2 {
   line-height: 1.4;
 }
 
-#interests {
-  margin-top: 32px;
-  width: 100%;
-}
-
 #interests h3 {
   margin: 0 0 12px;
   font-size: 0.75rem;
@@ -163,4 +158,9 @@ nav h1 {
 .nav-li a:hover {
   background: #000;
   color: #fff;
+}
+
+#interests {
+  margin-top: 16px;
+  width: 100%;
 }
