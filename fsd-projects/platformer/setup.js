@@ -18,16 +18,16 @@ const playerScale = 0.8; //makes the player just a bit smaller. Doesn't affect t
 
 // Player variables
 const player = {
-  x: 50,
-  y: 100,
-  speedX: 0,
-  speedY: 0,
-  width: undefined,
-  height: undefined,
-  onGround: false,
-  facingRight: true,
-  deadAndDeathAnimationDone: false,
-  winConditionMet: false,
+    x: 1300, // 1300, 600
+    y: 600,
+    speedX: 0,
+    speedY: 0,
+    width: undefined,
+    height: undefined,
+    onGround: false,
+    facingRight: true,
+    deadAndDeathAnimationDone: false,
+    winConditionMet: false,
 };
 
 let hitDx;
@@ -37,25 +37,25 @@ let hitBoxHeight = 105 * playerScale;
 let firstTimeSetup = true;
 
 const keyPress = {
-  any: false,
-  up: false,
-  left: false,
-  down: false,
-  right: false,
-  space: false,
+    any: false,
+    up: false,
+    left: false,
+    down: false,
+    right: false,
+    space: false,
 };
 
 // Player animation variables
 const animationTypes = {
-  duck: "duck",
-  flyingJump: "flying-jump",
-  frontDeath: "front-death",
-  frontIdle: "front-idle",
-  jump: "jump",
-  lazer: "lazer",
-  run: "run",
-  stop: "stop",
-  walk: "walk",
+    duck: "duck",
+    flyingJump: "flying-jump",
+    frontDeath: "front-death",
+    frontIdle: "front-idle",
+    jump: "jump",
+    lazer: "lazer",
+    run: "run",
+    stop: "stop",
+    walk: "walk",
 };
 let currentAnimationType = animationTypes.run;
 let frameIndex = 0;
@@ -96,10 +96,10 @@ let halleImage;
 let animationDetails = {};
 
 var collectableList = {
-  database: { image: "images/collectables/database.png" },
-  diamond: { image: "images/collectables/diamond-head.png" },
-  grace: { image: "images/collectables/grace-head.png" },
-  kennedi: { image: "images/collectables/kennedi-head.png" },
-  max: { image: "images/collectables/max-head.png" },
-  steve: { image: "images/collectables/steve-head.png" },
+    database: { image: "images/collectables/database.png" },
+    diamond: { image: "images/collectables/diamond-head.png" },
+    grace: { image: "images/collectables/grace-head.png" },
+    kennedi: { image: "images/collectables/kennedi-head.png" },
+    max: { image: "images/collectables/max-head.png" },
+    steve: { image: "images/collectables/steve-head.png" },
 };
