@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Gallery</title>
+    <style>
+        body {
+            background: #549fd9;
+            color: #222;
+            font-family: 'Creepster', Arial, sans-serif;
+            font-size: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #all-contents {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 48px;
+            padding: 16px 24px;
+            background: #fff;
+            border: 1px solid #000000;
+            border-radius: 12px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #000;
+        }
+        
+        #nav-ul {
+            list-style: none;
+            display: flex;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-li {
+            display: inline-block;
+        }
+        
+        #navanchor {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 8px;
+            transition: background 0.25s ease, color 0.25s ease;
+        }
+        
+        #navanchor:hover {
+            background: #000;
+            color: #fff;
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 32px;
+        }
+        
+        .image-item {
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .image-item img {
+            max-width: 100%;
+            max-height: 320px;
+            border-radius: 12px;
+            box-shadow: 0 0 2px 2px #37aee6, 0 2px 8px 0 rgba(255, 255, 255, 0.18);
+            background: #18120f;
+            border: 4px solid #000000;
+            transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+        }
+        
+        .image-item img:hover {
+            box-shadow: 0 0 2px 2px #37aee6, 0 2px 8px 0 rgba(255, 255, 255, 0.18);
+            border-color: #000000;
+            transform: scale(1.08);
+        }
+        
+        @media (max-width: 900px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="all-contents">
+        <nav>
+            <h1>Images</h1>
+            <ul id="nav-ul">
+                <li class="nav-li">
+                    <a id="navanchor" href="index.html">Home</a>
+                </li>
+                <li class="nav-li">
+                    <a id="navanchor" href="portfolio.html">Portfolio</a>
+                </li>
+                <li class="nav-li"><a id="navanchor" href="images.html">Images</a>
+                </li>
+
+            </ul>
+        </nav>
+        <div class="image-grid">
+            <div class="image-item"><img src="assets/IMG_6546.JPG" alt="IMG_6546"></div>
+
+            <div class="image-item"><img src="assets/IMG_6547.JPG"></div>
+            <div class="image-item"><img src="assets/IMG_6548.JPG"></div>
+            <div class="image-item"><img src="assets/IMG_6549.JPG"></div>
+            <div class="image-item"><img src="assets/IMG_6550.JPG"></div>
+        </div>
+        <!-- Modal for full-size image -->
+        <div id="imageModal" class="modal">
+            <span class="close">&times;</span>
+            <span class="modal-arrow left">&#10094;</span>
+            <img class="modal-content" id="modalImg" alt="Full Size">
+            <span class="modal-arrow right">&#10095;</span>
+        </div>
+</body>
+
+
+
+
+
+
+
+<script>
+    // Modal logic with navigation
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    const closeBtn = document.querySelector('.close');
+    const leftArrow = document.querySelector('.modal-arrow.left');
+    const rightArrow = document.querySelector('.modal-arrow.right');
+    const images = Array.from(document.querySelectorAll('.image-item img'));
+    let currentIndex = 0;
+
+    function showModal(index) {
+        currentIndex = index;
+        modal.style.display = 'block';
+        modalImg.src = images[index].src;
+        modalImg.alt = images[index].alt;
+    }
+
+    images.forEach((img, idx) => {
+        img.addEventListener('click', function() {
+            showModal(idx);
+        });
+    });
+
+    closeBtn.onclick = function() {
+        modal.style.display = 'none';
+        modalImg.src = '';
+    }
+
+    leftArrow.onclick = function(e) {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        showModal(currentIndex);
+    }
+
+    rightArrow.onclick = function(e) {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % images.length;
+        showModal(currentIndex);
+    }
+
+    window.onclick = function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            modalImg.src = '';
+        }
+    }
+
+    window.addEventListener('keydown', function(e) {
+        if (modal.style.display === 'block') {
+            if (e.key === 'ArrowLeft') {
+                currentIndex = (currentIndex - 1 + images.length) % images.length;
+                showModal(currentIndex);
+            } else if (e.key === 'ArrowRight') {
+                currentIndex = (currentIndex + 1) % images.length;
+                showModal(currentIndex);
+            } else if (e.key === 'Escape') {
+                modal.style.display = 'none';
+                modalImg.src = '';
+            }
+        }
+    });
+</script>
+<style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: auto;
+        animation: fadeIn 0.3s;
+    }
+    
+    .modal-content {
+        display: block;
+        margin: 5vh auto;
+        max-width: 90vw;
+        max-height: 80vh;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.32);
+        background: #18120f;
+        border: 6px solid #000000;
+        animation: scaleUp 0.3s;
+    }
+    
+    .close {
+        position: absolute;
+        top: 32px;
+        right: 48px;
+        color: #020202;
+        font-size: 48px;
+        font-weight: 300;
+        cursor: pointer;
+        z-index: 1001;
+        transition: color 0.2s;
+        text-shadow: 2px 2px 8px #000;
+    }
+    
+    .close:hover {
+        color: #fff;
+    }
+    
+    .modal-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #000000;
+        font-size: 64px;
+        font-weight: 300;
+        cursor: pointer;
+        z-index: 1001;
+        user-select: none;
+        padding: 0 24px;
+        transition: color 0.2s;
+        text-shadow: 2px 2px 8px #000;
+    }
+    
+    .modal-arrow.left {
+        left: 0;
+    }
+    
+    .modal-arrow.right {
+        right: 0;
+    }
+    
+    .modal-arrow:hover {
+        color: #fff;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes scaleUp {
+        from {
+            transform: scale(0.95);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+</style>
+
+</html>
