@@ -1,37 +1,47 @@
-var init = function (window) {
+var maxCircles = prompt("How many circles do you desire?: ")
+
+var init = function(window) {
     'use strict';
-    var 
+    var
         draw = window.opspark.draw,
         physikz = window.opspark.racket.physikz,
-        
+
         app = window.opspark.makeApp(),
-        canvas = app.canvas, 
+        canvas = app.canvas,
         view = app.view,
         fps = draw.fps('#000');
-        
-    
+
+
     window.opspark.makeGame = function() {
-        
+
         window.opspark.game = {};
         var game = window.opspark.game;
-        
+
         ///////////////////
         // PROGRAM SETUP //
         ///////////////////
-        
+
         // TODO 1 : Declare and initialize our variables
 
-
+        var circles = []
 
         // TODO 2 : Create a function that draws a circle 
-        
 
+        function drawCircle() {
+            var circle = draw.randomCircleInArea(canvas, true, true, "#999", 2);
+            physikz.addRandomVelocity(circle, canvas, 5, 5);
+            view.addChild(circle);
+            circles.push(circle);
+
+        }
 
         // TODO 3 : Call the drawCircle() function
 
-
-
         // TODO 7 : Use a loop to create multiple circles
+
+        for (var count = 1; count < maxCircles; count++) {
+            drawCircle()
+        }
 
 
 
@@ -39,7 +49,7 @@ var init = function (window) {
         ///////////////////
         // PROGRAM LOGIC //
         ///////////////////
-        
+
         /* 
         This Function is called 60 times/second, producing 60 frames/second.
         In each frame, for every circle, it should redraw that circle
@@ -47,16 +57,23 @@ var init = function (window) {
         */
         function update() {
             // TODO 4 : Update the position of each circle using physikz.updatePosition()
+            for (var i = 0; i < circles.length; i++) {
+                physikz.updatePosition(circles[i]);
+            }
 
-            
+
             // TODO 5 : Call game.checkCirclePosition() on your circles
-           
+            for (var i = 0; i < circles.length; i++) {
+                game.checkCirclePosition(circles[i]);
+            }
+
+
 
             // TODO 8 / TODO 9 : Iterate over the array
-           
-            
+
+
         }
-    
+
         /* 
         This Function should check the position of a circle that is passed to the 
         Function. If that circle drifts off the screen, this Function should move
@@ -65,35 +82,46 @@ var init = function (window) {
         game.checkCirclePosition = function(circle) {
 
             // if the circle has gone past the RIGHT side of the screen then place it on the LEFT
-            if ( circle.x > canvas.width ) {
-                circle.x = 0;
+            if (circle.x > canvas.width) {
+                circle.velocityX *= -1;
             }
-            
+
             // TODO 6 : YOUR CODE STARTS HERE //////////////////////
-            
+            if (circle.x < 0) {
+                circle.velocityX *= -1;
+            }
+
+            if (circle.y > canvas.height) {
+                circle.velocityY *= -1;
+            }
+
+            if (circle.y < 0) {
+                circle.velocityY *= -1;
+            }
 
 
             // YOUR TODO 6 CODE ENDS HERE //////////////////////////
         }
-        
+
         /////////////////////////////////////////////////////////////
         // --- NO CODE BELOW HERE  --- DO NOT REMOVE THIS CODE --- //
         /////////////////////////////////////////////////////////////
-        
+
         view.addChild(fps);
         app.addUpdateable(fps);
-        
+
         game.circles = circles;
         game.drawCircle = drawCircle;
         game.update = update;
-        
+
         app.addUpdateable(window.opspark.game);
     }
 };
 
 // DO NOT REMOVE THIS CODE //////////////////////////////////////////////////////
-if((typeof process !== 'undefined') &&
+if ((typeof process !== 'undefined') &&
     (typeof process.versions.node !== 'undefined')) {
     // here, export any references you need for tests //
     module.exports = init;
-}
+} // here, export any references you need for tests //
+module.exports = init;
